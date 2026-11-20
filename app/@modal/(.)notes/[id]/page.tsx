@@ -1,4 +1,4 @@
-import { fetchNoteById, fetchNotes } from "@/lib/api";
+import { fetchNoteById } from "@/lib/api";
 import { Suspense } from "react";
 import Loader from "@/components/Loader/Loader";
 import NotePreviewClient from "@/app/@modal/(.)notes/[id]/NotePreview.client";
@@ -21,7 +21,7 @@ async function NotePreviewContent({ params }: NotePreviewProps) {
   const queryClient = new QueryClient();
 
   await queryClient.prefetchQuery({
-    queryKey: ["note"],
+    queryKey: ["note", id],
     queryFn: () => fetchNoteById(id),
   });
 

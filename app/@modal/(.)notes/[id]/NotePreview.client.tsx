@@ -13,7 +13,7 @@ function NotePreviewClient() {
   const { id } = useParams<{ id: string }>();
 
   const { data: note, isSuccess } = useQuery({
-    queryKey: ["note"],
+    queryKey: ["note", id],
     queryFn: () => fetchNoteById(id),
     placeholderData: keepPreviousData,
     refetchOnMount: false,
@@ -26,10 +26,15 @@ function NotePreviewClient() {
     router.back();
   };
 
+  const handleClose = () => {
+    setIsModalShow(false);
+    router.back();
+  };
+
   return (
     <>
       {isModalShow && isSuccess && (
-        <Modal onClose={() => setIsModalShow(false)}>
+        <Modal onClose={handleClose}>
           <main className={css.main}>
             <div className={css.container}>
               <div className={css.item}>

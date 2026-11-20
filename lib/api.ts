@@ -1,7 +1,7 @@
 // https://notehub-public.goit.study/api/docs
 
 import axios, { type InternalAxiosRequestConfig } from "axios";
-import { type NewNote, type Note, type NoteTag } from "@/types/note";
+import { type NewNote, type Note } from "@/types/note";
 
 const api = axios.create({
   baseURL: "https://notehub-public.goit.study/api",

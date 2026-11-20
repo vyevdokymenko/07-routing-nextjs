@@ -1,4 +1,10 @@
-export const noteTags = ["Todo", "Work", "Personal", "Meeting", "Shopping"] as const;
+export const noteTags = [
+  "Todo",
+  "Work",
+  "Personal",
+  "Meeting",
+  "Shopping",
+] as const;
 export type NoteTag = (typeof noteTags)[number];
 
 export interface Note {
