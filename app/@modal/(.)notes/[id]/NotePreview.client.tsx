@@ -38,15 +38,15 @@ function NotePreviewClient() {
           <main className={css.main}>
             <div className={css.container}>
               <div className={css.item}>
+                <button onClick={handleBackAction} className={css.backBtn}>
+                  Back
+                </button>
                 <div className={css.header}>
                   <h2>{note.title}</h2>
                 </div>
                 <p className={css.tag}>{note.tag}</p>
                 <p className={css.content}>{note.content}</p>
                 <p className={css.date}>{note.createdAt}</p>
-                <button onClick={handleBackAction} className={css.backBtn}>
-                  {"< "}Back
-                </button>
               </div>
             </div>
           </main>
