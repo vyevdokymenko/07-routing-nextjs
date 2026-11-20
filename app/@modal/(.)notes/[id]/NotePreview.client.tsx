@@ -2,15 +2,12 @@
 
 import css from "./NotePreview.module.css";
 import Modal from "@/components/Modal/Modal";
-import { useState } from "react";
 import { keepPreviousData, useQuery } from "@tanstack/react-query";
 import { fetchNoteById } from "@/lib/api";
 import { useParams, useRouter } from "next/navigation";
 import Loader from "@/components/Loader/Loader";
 
 function NotePreviewClient() {
-  const [isModalShow, setIsModalShow] = useState<boolean>(true);
-
   const { id } = useParams<{ id: string }>();
 
   const {
@@ -28,41 +25,32 @@ function NotePreviewClient() {
 
   const router = useRouter();
 
-  const handleBackAction = () => {
-    router.back();
-  };
-
   const handleClose = () => {
-    setIsModalShow(false);
     router.back();
   };
 
   return (
-    <>
-      {isModalShow && (
-        <Modal onClose={handleClose}>
-          {isLoading && <Loader />}
-          {isError && <p>Could not fetch note details. {error.message}</p>}
-          {isSuccess && note && (
-            <main className={css.main}>
-              <div className={css.container}>
-                <div className={css.item}>
-                  <button onClick={handleBackAction} className={css.backBtn}>
-                    Back
-                  </button>
-                  <div className={css.header}>
-                    <h2>{note.title}</h2>
-                  </div>
-                  <p className={css.tag}>{note.tag}</p>
-                  <p className={css.content}>{note.content}</p>
-                  <p className={css.date}>{note.createdAt}</p>
-                </div>
+    <Modal onClose={handleClose}>
+      {isLoading && <Loader />}
+      {isError && <p>Could not fetch note details. {error.message}</p>}
+      {isSuccess && note && (
+        <main className={css.main}>
+          <div className={css.container}>
+            <div className={css.item}>
+              <button onClick={handleClose} className={css.backBtn}>
+                Back to notes
+              </button>
+              <div className={css.header}>
+                <h2>{note.title}</h2>
               </div>
-            </main>
-          )}
-        </Modal>
+              <p className={css.tag}>{note.tag}</p>
+              <p className={css.content}>{note.content}</p>
+              <p className={css.date}>{note.createdAt}</p>
+            </div>
+          </div>
+        </main>
       )}
-    </>
+    </Modal>
   );
 }
 
