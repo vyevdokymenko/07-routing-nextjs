@@ -3,7 +3,7 @@
 import { ChangeEvent, useState } from "react";
 import { keepPreviousData, useQuery } from "@tanstack/react-query";
 import { useDebouncedCallback } from "use-debounce";
-import css from "@/app/notes/NotesPage.module.css";
+import css from "@/app/notes/filter/[...slug]/NotesPage.module.css";
 import SearchBox from "@/components/SearchBox/SearchBox";
 import Pagination from "@/components/Pagination/Pagination";
 import { fetchNotes } from "@/lib/api";
@@ -14,14 +14,18 @@ import NoteList from "@/components/NoteList/NoteList";
 
 const QUERY_KEY = "notes";
 
-function NotesClient() {
+interface NotesClientProps {
+  tag?: string;
+}
+
+function NotesClient({ tag }: NotesClientProps) {
   const [isModalOpened, setIsModalOpened] = useState<boolean>(false);
   const [searchText, setSearchText] = useState<string>("");
   const [page, setPage] = useState<number>(1);
 
   const { data, isSuccess, isFetching } = useQuery({
-    queryKey: [QUERY_KEY, searchText, page],
-    queryFn: () => fetchNotes({ searchText: searchText, page: page }),
+    queryKey: [QUERY_KEY, searchText, page, tag],
+    queryFn: () => fetchNotes({ searchText, page, tag }),
     placeholderData: keepPreviousData,
     refetchOnMount: false,
     throwOnError: true,
@@ -42,7 +46,9 @@ function NotesClient() {
         {isSuccess && data.totalPages > 1 && (
           <Pagination
             pageCount={data.totalPages}
-            onPageChange={({ selected }: {selected: number}) => setPage(selected + 1)}
+            onPageChange={({ selected }: { selected: number }) =>
+              setPage(selected + 1)
+            }
             forcePage={page - 1}
           />
         )}

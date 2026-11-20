@@ -7,17 +7,19 @@ const api = axios.create({
   baseURL: "https://notehub-public.goit.study/api",
 });
 
-api.interceptors.request.use((config: InternalAxiosRequestConfig): InternalAxiosRequestConfig => {
-  const token: string | undefined = process.env.NEXT_PUBLIC_NOTEHUB_TOKEN;
-  if (token) {
-    config.headers.set("Authorization", `Bearer ${token}`);
-  }
-  return config;
-});
+api.interceptors.request.use(
+  (config: InternalAxiosRequestConfig): InternalAxiosRequestConfig => {
+    const token: string | undefined = process.env.NEXT_PUBLIC_NOTEHUB_TOKEN;
+    if (token) {
+      config.headers.set("Authorization", `Bearer ${token}`);
+    }
+    return config;
+  },
+);
 
 interface SearchNotesRequest {
   searchText?: string;
-  tag?: NoteTag;
+  tag?: string;
   page?: number;
   perPage?: number;
   sortBy?: "created" | "updated";
@@ -28,8 +30,11 @@ interface SearchNotesResponse {
   totalPages: number;
 }
 
-export const fetchNotes = async (request: SearchNotesRequest): Promise<SearchNotesResponse> => {
-  const search = request.searchText?.trim().length === 0 ? null : request.searchText?.trim();
+export const fetchNotes = async (
+  request: SearchNotesRequest,
+): Promise<SearchNotesResponse> => {
+  const search =
+    request.searchText?.trim().length === 0 ? null : request.searchText?.trim();
   const { data } = await api.get<SearchNotesResponse>("/notes", {
     params: {
       search: search,
