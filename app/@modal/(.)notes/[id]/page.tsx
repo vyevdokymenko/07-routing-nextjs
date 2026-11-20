@@ -7,15 +7,12 @@ import {
   HydrationBoundary,
   QueryClient,
 } from "@tanstack/react-query";
-import { connection } from "next/server";
 
 interface NotePreviewProps {
   params: Promise<{ id: string }>;
 }
 
 async function NotePreviewContent({ params }: NotePreviewProps) {
-  await connection();
-
   const { id } = await params;
 
   const queryClient = new QueryClient();
